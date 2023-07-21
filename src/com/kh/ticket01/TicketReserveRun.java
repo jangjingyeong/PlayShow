@@ -1,4 +1,4 @@
-package com.kh.ticket;
+package com.kh.ticket01;
 
 import java.util.Scanner;
 

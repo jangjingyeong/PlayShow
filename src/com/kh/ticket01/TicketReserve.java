@@ -1,4 +1,4 @@
-package com.kh.ticket;
+package com.kh.ticket01;
 
 public class TicketReserve {
 	// 입력 받을 정보 
