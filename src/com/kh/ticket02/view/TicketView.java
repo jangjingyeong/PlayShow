@@ -25,18 +25,25 @@ public class TicketView {
 				for(;;) {
 					choice = printMemberMenu();
 					switch(choice) {
-					case 1 : // 1. 회원 정보 입력 
+					case 1 : // 1. 회원 가입
 						member = inputMember();
 						int result = controller.insertMember(member);
 						if(result > 0) {
 							// 성공 메시지 출력
-							displaySuccess("학생 정보 등록 성공");
+							displaySuccess("회원 가입 성공");
 						} else {
 							// 실패 메시지 출력
-							displayError("학생 정보 등록 실패");
+							displayError("회원 가입 실패");
 						}
 						break;
 					case 2 : // 2. 회원 정보 확인(예매 내역, 회원 등급 포함) 
+						String memberId = inputMemberId();
+						member = controller.printMemberById(memberId);
+						if(member != null) {
+							showMember(member);
+						} else {
+							displayError("회원 정보가 존재하지 않습니다.");
+						}
 						break;
 					case 3 : // 3. 회원 정보 수정 
 						break;
@@ -79,6 +86,29 @@ public class TicketView {
 		
 	}
 
+	private void showMember(Ticket member) {
+		System.out.println("회원 정보 확인");
+		System.out.printf("아이디 : %s, 이름 : %s, 성별 : %s, 이메일 : %s, 전화번호 : %s"
+				, member.getMemberId()
+				, member.getMemberName()
+				, member.getGender()
+				, member.getEmail()
+				, member.getPhone());
+	}
+
+	private String inputMemberId() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■");
+		System.out.println();		
+		System.out.println("		                       [티켓 예매 프로그램] ");
+		System.out.println();
+		System.out.println("■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■");
+		System.out.println("◈ 2. 회원 정보 확인 ◈");
+		System.out.print("회원 아이디 : ");
+		String memberId = sc.next();
+		return memberId;
+	}
+
 	private void displayError(String message) {
 		System.out.println("[서비스 실패] : " + message);
 	}
@@ -88,8 +118,27 @@ public class TicketView {
 	}
 
 	private Ticket inputMember() {
-		// TODO Auto-generated method stub
-		return null;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■");
+		System.out.println();		
+		System.out.println("		                       [티켓 예매 프로그램] ");
+		System.out.println();
+		System.out.println("■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■");
+		System.out.println("◈ 1. 회원 가입 ◈");
+		System.out.print("아이디 : ");
+		String memberId = sc.next();
+		System.out.print("비밀번호 : ");
+		String memberPwd = sc.next();
+		System.out.print("이름 : ");
+		String memberName = sc.next();
+		System.out.print("성별(F,M) : ");
+		char gender = sc.next().charAt(0);
+		System.out.print("이메일 : ");
+		String email = sc.next();
+		System.out.print("전화번호 : ");
+		String phone = sc.next();
+		Ticket member = new Ticket(memberId, memberPwd, memberName, gender, email, phone);
+		return member;
 	}
 
 	private int printLoginMenu() {
@@ -114,7 +163,7 @@ public class TicketView {
 		System.out.println("		                       [티켓 예매 프로그램] ");
 		System.out.println();
 		System.out.println("■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■");
-		System.out.println("1. 회원 정보 입력");
+		System.out.println("1. 회원 가입");
 		System.out.println("2. 회원 정보 확인");
 		System.out.println("3. 회원 정보 수정");
 		System.out.println("4. 티켓 예매");
