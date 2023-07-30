@@ -42,4 +42,24 @@ public class TicketController {
 		return tList;
 	}
 
+	public int ticketReserve(Ticket tr) {
+		int result = tDao.ticketReserve(tr);
+		return result;
+	}
+
+	public Ticket selectTicket(Ticket tr) {
+		Ticket t1 = tDao.selectTicket(tr); 
+		return t1;
+	}
+
+	public int reduceSpace(Ticket tr) {
+		int result = tDao.reduceSpace(tr);
+		return result;
+	}
+
+	public List<Ticket> selectTicketReserve(String memberId) {
+		List<Ticket> trList = tDao.selectTicketReserve(memberId);
+		return trList;
+	}
+
 }

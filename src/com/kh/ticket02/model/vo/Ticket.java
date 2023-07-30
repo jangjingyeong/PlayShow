@@ -16,7 +16,7 @@ public class Ticket {
 	
 	
 	
-	private String reserveDate; // 예매일자
+	private Date reserveDate; // 예매일자
 	private int buyNum; // 예매매수 
 	private int buyAmount; // 예매금액
 	
@@ -62,12 +62,21 @@ public class Ticket {
 		this.space = space;
 	}
 	
+	// 티켓 예매 
+	public Ticket(int buyNum, String title) {
+		super();
+		this.buyNum = buyNum;
+		this.title = title;
+	}
+	
+	
 	
 
 	// getter, setter
 	public String getMemberId() {
 		return MemberId;
 	}
+
 
 	public void setMemberId(String memberId) {
 		MemberId = memberId;
@@ -121,11 +130,11 @@ public class Ticket {
 		this.enrollDate = enrollDate;
 	}
 
-	public String getReserveDate() {
+	public Date getReserveDate() {
 		return reserveDate;
 	}
 
-	public void setReserveDate(String reserveDate) {
+	public void setReserveDate(Date reserveDate) {
 		this.reserveDate = reserveDate;
 	}
 

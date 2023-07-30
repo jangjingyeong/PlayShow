@@ -19,6 +19,7 @@ public class TicketView {
 		Ticket ticket = null;
 		List<Ticket> tList;
 		String memberId = "";
+		List<Ticket> trList;
 		finish : 
 		while(true) {
 			int choice = printLoginMenu();
@@ -63,11 +64,40 @@ public class TicketView {
 						}
 						break;
 					case 4 : // 4. 티켓 예매
-						
+						tList = controller.selectAllTickets();
+						if(!tList.isEmpty()) {
+							// 예매 
+							printAllTickets(tList);
+							Ticket tr = ticketReserve("예매");
+							Ticket t1 = controller.selectTicket(tr);
+							int totalAmount = t1.getPrice()*tr.getBuyNum();
+							tr.setBuyAmount(totalAmount);
+							result = controller.ticketReserve(tr);
+							if(result > 0) {
+								int result2 = controller.reduceSpace(tr);
+								displaySuccess("티켓 예매 완료");
+							} else {
+								displayError("티켓 예매 실패");
+							}
+						} else {
+							// 티켓 예매할게 없다 
+							displayError("예매 가능한 공연이 없습니다.");
+						}
 						break;
-					case 5 : // 5. 티켓 취소
+					case 5 : // 5. 예매내역 확인 
+						memberId = inputMemberId("예매한 ");
+						trList = controller.selectTicketReserve(memberId);
+						if(!trList.isEmpty()) {
+							// 예매내역 있음 
+							showTicketReserve(trList);
+						} else {
+							// 예매내역 없음 
+						}
 						break;
-					case 6 : // 6. 이전으로 돌아가기
+					case 6 : // 6. 티켓 취소
+						Ticket tr = ticketReserve("취소");
+						break;
+					case 7 : // 7. 이전으로 돌아가기
 						break end;
 					case 0 : // 0. 프로그램 종료
 						break finish; 
@@ -117,6 +147,37 @@ public class TicketView {
 		
 	}
 
+	private void showTicketReserve(List<Ticket> trList) {
+		System.out.println("■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■");
+		System.out.println("예매 내역 확인");
+		for(Ticket reserve : trList) { // foreach 쓰면 인덱스 신경쓰지 않고 출력 가능 
+			System.out.printf("아이디 : %s, 공연이름 : %s,  공연 날짜: %s"
+					+ ", 공연 시간 : %s, 예매매수 : %s, 예매가격 : %s,"
+					+ ", 예매날짜 : %s\n"
+					, reserve.getMemberId()
+					, reserve.getTitle()
+					, reserve.getTicketDate()
+					, reserve.getTicketTime()
+					, reserve.getBuyNum()
+					, reserve.getBuyAmount()
+					, reserve.getReserveDate());
+		}
+	}
+
+	private Ticket ticketReserve(String msg) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("티켓 " + msg);
+		System.out.print("회원 아이디 입력 : ");
+		String buyer = sc.nextLine();
+		System.out.print(msg + "할 공연 이름 입력 : ");
+		String title = sc.nextLine();
+		System.out.print(msg + "할 공연 매수 입력 : ");
+		int buyNum = sc.nextInt();
+		Ticket ticket = new Ticket(buyNum, title);
+		ticket.setMemberId(buyer);
+		return ticket;
+	}
+
 	private Ticket modifyMember() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("회원 정보 수정");
@@ -156,8 +217,9 @@ public class TicketView {
 		System.out.println("2. 회원 정보 확인");
 		System.out.println("3. 회원 정보 수정");
 		System.out.println("4. 티켓 예매");
-		System.out.println("5. 티켓 취소 ");
-		System.out.println("6. 이전으로 돌아가기");
+		System.out.println("5. 예매내역 확인");
+		System.out.println("6. 티켓 취소 ");
+		System.out.println("7. 이전으로 돌아가기");
 		System.out.println("0. 프로그램 종료");
 		System.out.print("메뉴 선택 >> ");
 		int choice = sc.nextInt();
